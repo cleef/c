@@ -1,0 +1,37 @@
+* Introduction
+a simple Object to HBase Mapping (OHM) framework 
+
+** Simple API for HDFS
+*** Feature
+OHM provides a simple API for HDFS, which has below features
+- uniform for local and remote file
+- meta data <key, value> for file
+- versioned file : every update to same path would create a new file, similar to wiki editing.
+
+*** Samples
+upload and download files
+
+#+BEGIN_SRC java
+   	TFileSystem fs = FileSystems.getDefault();
+	String local = "/home/readme.txt";
+        String remote = HPath.hdfs_scheme + "/tmp/readme";
+
+        fs.copy(new HPath(local), new HPath(remote)); //upload
+        fs.copy(new HPath(remote), new HPath(local)); //download
+#+END_SRC
+
+Meta Data
+
+#+BEGIN_SRC java
+        TFile file = fs.open(new HPath(remote));
+
+	Map<String, String> meta = new HashMap<String, String>();
+        meta.put("color", "red");
+        file.setMeta(meta);
+   
+	Map<String, String> meta2 = file.getMeta();
+#+END_SRC       
+
+
+** Object to HBase Mapping
+
